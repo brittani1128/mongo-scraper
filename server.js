@@ -67,27 +67,49 @@ app.get("/all", function(req,res){
 // Scrapes website for articles and adds to scrapedData collection
 app.get("/scrape", function(req,res){
 
-  request("https://theonion.com/", function(error, response, html){
+  request("https://www.npr.org/sections/news/", function(error, response, html){
     var $ = cheerio.load(html);
     
-    var articleBlock = $(".curation-module__item__wrapper");
-    $(articleBlock).each(function(i, element) {
+    //THE ONION
+    // var articleBlock = $(".curation-module__item__wrapper");
+    // $(articleBlock).each(function(i, element) {
 
-      var imageUrl = $(element).children(".image-container-wrapper").children(".image-container").children("a").children("img").attr("data-src");
-      var title = $(element).children(".content-wrapper").children(".content-meta__headline").children(".content-meta__headline__wrapper").children("h6").text();
-      var summary = $(element).children(".content-meta__excerpt").text();
-      var link = $(element).attr("data-permalink");
+    //   var imageUrl = $(element).children(".image-container-wrapper").children(".image-container").children("a").children("img").attr("data-src");
+    //   var title = $(element).children(".content-wrapper").children(".content-meta__headline").children(".content-meta__headline__wrapper").children("h6").text();
+    //   var summary = $(element).children(".content-meta__excerpt").text();
+    //   var link = $(element).attr("data-permalink");
 
       
-    
-    
-      db.scrapedData.insert({title:title, link:link, imageUrl:imageUrl, summary:summary, saved:false});
-      
-    });
+    //NPR
 
+        $("article").each(function(i, element){
+            // var imageUrl = $(element).children(".item-image").children(".imagewrap").children("a").children("img").attr("data-src");
+            var title = $(element).children(".item-info").children(".title").children("a").text();
+            var summary = $(element).children(".item-info").children(".teaser").children("a").text();
+            var link = $(element).children(".item-info").children(".title").children("a").attr("href");
+
+            if (title && link && summary) {
+                db.scrapedData.insert({
+                    title:title, 
+                    link:link, 
+                    // imageUrl:imageUrl, 
+                    summary:summary, 
+                    saved:false
+                },
+                function(err, inserted){
+                  if (err) {
+                    console.log(err);
+                  }
+                  else {
+                    console.log(inserted);
+                  }
+                });
+            }        
+        });
   });
-
+  res.send("Scrape Complete");
 });
+
 
 app.get("/saved", function(req, res){
     db.scrapedData.find().sort({_id:1}, function(error, data){
