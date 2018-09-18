@@ -1,21 +1,21 @@
 <div class="container">
-            
+        
 {{#each data}}
         <div class="card">
             <div class="row">
                 <div class="card-title" style="font-weight: bold;">
-                    {{data.title}}
+                    {{this.title}}
                 </div>
             </div>
             <div class="row">
-                <div class="col m3">
+                <div class="col m4">
                     <div class="image-div">
-                        <img class="float-left" src="{{data.imageUrl}}">
+                        <img class="float-left" style="max-width:250px" src="{{this.imageUrl}}">
                     </div>
                 </div>
-                <div class="col m9">
+                <div class="col m8">
                     <div class="card-content">
-                        <div class="card-text pl-2">{{data.summary}}</a>
+                        <div class="card-text pl-2">{{this.summary}} 
                     </div>
                 </div> 
                 <button>Save</button>  

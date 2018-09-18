@@ -22,6 +22,7 @@ var bodyParser = require("body-parser");
 
 
 
+
 // Initialize Express
 var app = express();
 
@@ -59,79 +60,15 @@ app.engine(
 var Comment = require("./models/Comment.js");
 var Article = require("./models/Article.js");
 
+
 // Require routing controllers
+var htmlRoutes = require("./controllers/html-routes.js");
+var articleRoutes = require("./controllers/article-routes.js");
 
 
 // Routing
-
-
-//ROUTES =============================================
-
-// Main route that finds all articles from db
-app.get("/", function(req, res) {
-  Article.find({saved:false}, function(error, data){
-    if (error){
-      console.log(error);
-      res.status(500).send(error);
-    }
-    else {
-      console.log(data)
-        //sends data response in json to index.handlebars file
-        res.render("index", {data:data});
-    }
-  });
-    
-});
-
-
-
-// Scrapes website for articles and adds to Article collection
-app.get("/scrape", function(req,res){
-
-  // scrape NPR science section
-  request("https://www.npr.org/sections/science/", function(error, response, html){
-    var $ = cheerio.load(html);
-    
-        $("article.has-image").each(function(i, element){
-
-          var newArticle = {};
-
-            newArticle.imageUrl = $(element).children(".item-image").children(".imagewrap").children("a").children("img").attr("src");
-            newArticle.title = $(element).children(".item-info").children(".title").children("a").text();
-            newArticle.summary = $(element).children(".item-info").children(".teaser").children("a").text();
-            newArticle.link = $(element).children(".item-info").children(".title").children("a").attr("href");
-
-          // Create new Article model with scraped article info
-          var newEntry = new Article(newArticle);
-
-          // Save new Article in db
-          newEntry.save(function(err,saved){
-            if (err){
-              console.log(err);
-            } else {
-              console.log(saved)
-            }
-          });
-       
-        });
-
-        // Redirect back to home page when finished
-        res.redirect("/");
-  });
-});
-
-
-// app.get("/saved", function(req, res){
-//     db.scrapedData.find().sort({_id:1}, function(error, data){
-//         if (error){
-//             console.log(error)
-//           }
-//           else {
-//             res.json(data);
-//           }
-//     })
-// })
-
+app.use("/", htmlRoutes);
+app.use("/", articleRoutes);
 
 
 // Listen on port 3000
