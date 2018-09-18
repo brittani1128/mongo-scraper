@@ -4,7 +4,7 @@
         <div class="card">
             <div class="row">
                 <div class="card-title" style="font-weight: bold;">
-                    {{this.title}}
+                    <h5>{{this.title}}</h5>
                 </div>
             </div>
             <div class="row">
@@ -15,14 +15,15 @@
                 </div>
                 <div class="col m8">
                     <div class="card-content">
-                        <div class="card-text pl-2">{{this.summary}} 
-                    </div>
-                </div> 
-                <button>Save</button>  
-            </div>      
+                        <div class="card-text"><p>{{this.summary}}</p></div>
+                        <div class="card-link"><a href="{{this.link}}" target="_blank">Read More</a></div>
+                    </div> 
+                <a class="save-btn waves-effect waves-light btn right" data-id="{{this._id}}">Save</a> 
+                </div>      
+            </div>
         </div>
 {{/each}}
 
 
 
-</div>
+

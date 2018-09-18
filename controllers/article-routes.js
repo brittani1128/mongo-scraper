@@ -44,5 +44,15 @@ router.get("/scrape", function(req,res){
           res.redirect("/");
     });
   });
+
+  router.post("/api/saved/:id", function(req,res){
+    Article.findOneAndUpdate({_id:req.params.id}, {saved:true}, function(err,data){
+      if (err){
+        console.log(err);
+      } else {
+        console.log("data saved", data)
+      }
+    });
+  });
   
   module.exports = router;
