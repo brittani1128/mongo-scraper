@@ -2,36 +2,48 @@
 //TO DO
 
 //Currently: scraping site, storing info in db, getting results from db in json format
-
+//Mongoose with Models
+//Handlebars
 //Need to populate html with scraped data results
 //Save button option to save article (adds saved attribute)
 //  Create saved articles route to display all saved articles
+//  Comment btn on each saved article
 
 
-// Dependencies
+// DEPENDENCIES ==========================================================
 var express = require("express");
 var mongojs = require("mongojs");
-
-
+var mongoose = require("mongoose");
 var request = require("request");
 var cheerio = require("cheerio");
-
 var exphbs = require("express-handlebars");
-var path = require("path");
+var bodyParser = require("body-parser");
+
+
+
 
 // Initialize Express
 var app = express();
+
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.static("public"));
 
-// Database configuration
-var databaseUrl = "hwScraper";
-var collections = ["scrapedData"];
 
-// Hook mongojs configuration to the db variable
-var db = mongojs(databaseUrl, collections);
+// Database configuration with mongoose
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+mongoose.Promise = Promise;
+var db = mongoose.connection;
+mongoose.connect(MONGODB_URI);
+
+
+// Show any mongoose errors
 db.on("error", function(error) {
-  console.log("Database Error:", error);
+  console.log("Mongoose Error: ", error);
 });
+
 
 // Handlebars
 app.engine(
@@ -42,85 +54,83 @@ app.engine(
   );
   app.set("view engine", "handlebars");
 
+
+// Require all models
+var Comment = require("./models/Comment.js");
+var Article = require("./models/Article.js");
+
+// Require routing controllers
+
+
+// Routing
+
+
 //ROUTES =============================================
 
-// Main route (simple Hello World Message); gets overridden by setting express.static(public)
+// Main route that finds all articles from db
 app.get("/", function(req, res) {
-    res.send("Hello World");
-});
-
-
-// Retrieves data from scrapedData collection
-app.get("/all", function(req,res){
-  db.scrapedData.find({}, function(error, found){
+  Article.find({saved:false}, function(error, data){
     if (error){
       console.log(error);
+      res.status(500).send(error);
     }
     else {
-        //sends data response in json
-        res.json(found);
+      console.log(data)
+        //sends data response in json to index.handlebars file
+        res.render("index", {data:data});
     }
   });
+    
 });
 
 
-// Scrapes website for articles and adds to scrapedData collection
+
+// Scrapes website for articles and adds to Article collection
 app.get("/scrape", function(req,res){
 
-  request("https://www.npr.org/sections/news/", function(error, response, html){
+  // scrape NPR science section
+  request("https://www.npr.org/sections/science/", function(error, response, html){
     var $ = cheerio.load(html);
     
-    //THE ONION
-    // var articleBlock = $(".curation-module__item__wrapper");
-    // $(articleBlock).each(function(i, element) {
+        $("article.has-image").each(function(i, element){
 
-    //   var imageUrl = $(element).children(".image-container-wrapper").children(".image-container").children("a").children("img").attr("data-src");
-    //   var title = $(element).children(".content-wrapper").children(".content-meta__headline").children(".content-meta__headline__wrapper").children("h6").text();
-    //   var summary = $(element).children(".content-meta__excerpt").text();
-    //   var link = $(element).attr("data-permalink");
+          var newArticle = {};
 
-      
-    //NPR
+            newArticle.imageUrl = $(element).children(".item-image").children(".imagewrap").children("a").children("img").attr("src");
+            newArticle.title = $(element).children(".item-info").children(".title").children("a").text();
+            newArticle.summary = $(element).children(".item-info").children(".teaser").children("a").text();
+            newArticle.link = $(element).children(".item-info").children(".title").children("a").attr("href");
 
-        $("article").each(function(i, element){
-            // var imageUrl = $(element).children(".item-image").children(".imagewrap").children("a").children("img").attr("data-src");
-            var title = $(element).children(".item-info").children(".title").children("a").text();
-            var summary = $(element).children(".item-info").children(".teaser").children("a").text();
-            var link = $(element).children(".item-info").children(".title").children("a").attr("href");
+          // Create new Article model with scraped article info
+          var newEntry = new Article(newArticle);
 
-            if (title && link && summary) {
-                db.scrapedData.insert({
-                    title:title, 
-                    link:link, 
-                    // imageUrl:imageUrl, 
-                    summary:summary, 
-                    saved:false
-                },
-                function(err, inserted){
-                  if (err) {
-                    console.log(err);
-                  }
-                  else {
-                    console.log(inserted);
-                  }
-                });
-            }        
+          // Save new Article in db
+          newEntry.save(function(err,saved){
+            if (err){
+              console.log(err);
+            } else {
+              console.log(saved)
+            }
+          });
+       
         });
+
+        // Redirect back to home page when finished
+        res.redirect("/");
   });
-  res.send("Scrape Complete");
 });
 
 
-app.get("/saved", function(req, res){
-    db.scrapedData.find().sort({_id:1}, function(error, data){
-        if (error){
-            console.log(error)
-          }
-          else {
-            res.json(data);
-          }
-    })
-})
+// app.get("/saved", function(req, res){
+//     db.scrapedData.find().sort({_id:1}, function(error, data){
+//         if (error){
+//             console.log(error)
+//           }
+//           else {
+//             res.json(data);
+//           }
+//     })
+// })
 
 
 

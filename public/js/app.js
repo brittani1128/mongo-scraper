@@ -29,7 +29,7 @@
     var cardDiv = $("<div class='card'>").append(
       $("<div class='card-title'>").text(article.title),
       $("<div class='card-image'>").html("<img src='" + article.imageUrl + "'>"),
-      $("<div class='card-content'>").text(article.summary).append(article.link)
+      $("<div class='card-content'>").html("<br>" + article.summary).append(article.link)
 
     );
 
