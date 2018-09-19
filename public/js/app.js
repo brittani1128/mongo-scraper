@@ -1,43 +1,35 @@
 
-    $(document).ready(function () { 
+    function generateModal(comments, articleId){
+      $("#comments-list").empty();
 
-  // function displayResults(data){
-  //   $(".article-results").empty;
-  //   data.forEach(function(article){
-  //     console.log(article);
-
-  //     // var cardDiv = $("<div class='card'>");
-  //     // var title = $("<div class='card-title'>").text(data[i].title)
-  //   })
-  // }
-
-  // Receives json response from query to db in app.get("/all")
-  // $.getJSON("/all", function(data){
-  //   $(".article-results").empty();
-  //   data.forEach(function(article){
-     
-  //   var cardDiv = $("<div class='card'>").append(
-  //     $("<div class='card-title'>").text(article.title),
-  //     $("<div class='card-image'>").html("<img src='" + article.imageUrl + "'>"),
-  //     $("<div class='card-content'>").html("<br>" + article.summary).append(article.link)
-
-  //   );
-
-  //   $(".article-results").append(cardDiv);
-     
-  //   });
+    }
     
-  // })
+    $('.modal').modal();
+    
+
+    var globalId;
+
+  $(document).ready(function () { 
+
 
   $(".save-btn").on("click", function(req,res){
-    console.log("save!");
+    
+    // save article id of button 
     var articleId = $(this).attr("data-id");
-    console.log(articleId)
+    console.log(articleId);
+
+    // save instance of button to update color
+    var thisBtn = $(this);
 
     $.ajax({
       url: "/api/saved/"+ articleId,
       method: "POST"
-    });
+    })
+
+    thisBtn.removeClass("save-btn");
+    thisBtn.addClass("unsave-btn");
+    thisBtn.text("Unsave")
+    
   
   });
 
@@ -54,10 +46,13 @@
   });
 
   $(".comment-btn").on("click", function(req,res){
-    console.log("comment!");
-    var articleId = $(this).attr("data-id");
-    console.log(articleId)
 
+    var articleId = $(this).attr("data-id");
+    globalId = articleId;
+    console.log(globalId);
+    $('#modal1').modal('open');
+   
+    // $("#new-comment-field").text("");
     //modal pop open to leave comment
 
     // $.ajax({
@@ -67,7 +62,32 @@
   
   });
 
+  $(".add-comment-btn").on("click", function(req,res){
+    var commentInput = $("#new-comment-field").val().trim();
+    console.log(commentInput);
+    console.log(globalId);
+    if (commentInput === "") {
+      return alert("Please enter a comment before adding");
+    };
+    var id = globalId;
 
+    $.ajax({
+      method: "POST",
+      url: "/api/comments/" + id,
+      data: {
+        body: commentInput
+      }
+    }).then(function (data) {
+      // globalId = "";
+      $("#comment-input").val("");
+    });
+    // $.getJSON("/api/getData?id=" + id, function (data) {
+    //   var comments = data.comments;
+    //   generateModal(comments, id);
+    // });
+  
+  })
+ 
 
 
 

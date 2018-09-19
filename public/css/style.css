@@ -1,3 +1,23 @@
+body {
+    background: url("https://images.unsplash.com/photo-1500322095253-b2c00f31fa54?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=2c8f49cc46a5ca0dc3bc77b471a513d1&auto=format&fit=crop&w=3300&q=80") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+}
+
+nav {
+    background-color:#2b1025;
+}
+
+.brand-logo {
+    margin-left:50px;
+}
+#headline {
+    font-size: 20px;
+}
+
 .card {
  margin:20px;
  padding:15px;
@@ -5,4 +25,19 @@
 
 .comment-btn {
     margin-right:10px;
+}
+
+.save-btn {
+    background-color:#2b1025;
+}
+.unsave-btn {
+    background-color:#bdbdbd;
+}
+
+.comment-btn {
+    background-color:#4d357e;
+}
+
+.remove-btn {
+    background-color:#a65ee2;
 }

@@ -10,7 +10,7 @@ var router = express.Router();
 
 
 
-// Scrapes website for articles and adds to Article collection
+// Route to scrape website for articles and adds to Article collection
 router.get("/scrape", function(req,res){
 
     // scrape NPR science section
@@ -45,16 +45,18 @@ router.get("/scrape", function(req,res){
     });
   });
 
+  // Route to add article to saved list
   router.post("/api/saved/:id", function(req,res){
     Article.findOneAndUpdate({_id:req.params.id}, {saved:true}, function(err,data){
       if (err){
         console.log(err);
       } else {
-        console.log("data saved", data)
+        console.log("data removed", data)
       }
     });
   });
 
+  // Route to remove article from saved list
   router.post("/api/removed/:id", function(req,res){
     Article.findOneAndUpdate({_id:req.params.id}, {saved:false}, function(err,data){
       if (err){
@@ -64,6 +66,35 @@ router.get("/scrape", function(req,res){
       }
       
     });
+  });
+
+  // Route to add comments
+  router.post("/api/comments/:id", function(req,res){
+    // create new Comment moel
+    Comment.create(req.body).then(function(dbComment){
+      // update Article model with new comment id
+      Article.findOneAndUpdate({_id:req.params.id},{comment:dbComment._id}, {new:true})
+      // send json response
+    }).then(function(dbArticle){
+      res.json(dbArticle);
+    }).catch(function(err){
+      res.json(err);
+    });
+  });
+
+  // Route to display comments
+  router.get("/api/comments/:id", function(req,res){
+    // find article with associated ID
+    Article.findOne({_id:req.params.id})
+    // populate Article with comments
+      .populate("comment")
+      .then(function(err,commentData){
+        if (err){
+          console.log(err);
+        } else {
+          res.render("saved", {commentData:commentData});
+        }
+      });
   });
   
   module.exports = router;

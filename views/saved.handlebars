@@ -1,28 +1,66 @@
+{{#if data}}
+
 <div class="container">
-        
-{{#each data}}
-        <div class="card">
-            <div class="row">
-                <div class="card-title" style="font-weight: bold;">
-                    <h5>{{this.title}}</h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col m4">
-                    <div class="image-div">
-                        <img class="float-left" style="max-width:250px" src="{{this.imageUrl}}">
-                    </div>
-                </div>
-                <div class="col m8">
-                    <div class="card-content">
-                        <div class="card-text"><p>{{this.summary}}</p></div>
-                        <div class="card-link"><a href="{{this.link}}" target="_blank">Read More</a></div>
-                    </div>   
-                    <a class="remove-btn waves-effect waves-light btn right" data-id="{{this._id}}">Remove</a> 
-                    <a class="comment-btn waves-effect waves-light btn right" data-id="{{this._id}}">Comment</a> 
-                </div>      
+
+
+
+    {{#each data}}
+    <div class="card">
+        <div class="row">
+            <div class="card-title" style="font-weight: bold;">
+                <h5>{{this.title}}</h5>
             </div>
         </div>
-{{/each}}
+        <div class="row">
+            <div class="col m4">
+                <div class="image-div">
+                    <img class="float-left" style="max-width:250px" src="{{this.imageUrl}}">
+                </div>
+            </div>
+            <div class="col m8">
+                <div class="card-content">
+                    <div class="card-text">
+                        <p>{{this.summary}}</p>
+                    </div>
+                    <div class="card-link">
+                        <a href="{{this.link}}" target="_blank">Read More</a>
+                    </div>
+                </div>
+                <a class="remove-btn waves-effect waves-light btn right" data-id="{{this._id}}">Remove</a>
+                <a class="comment-btn waves-effect waves-light btn modal-trigger right" href="#modal1" data-id="{{this._id}}">Comment</a>
+            </div>
+        </div>
+    </div>
+    {{/each}}
 
 </div>
+
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+    <div class="modal-header right">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">X</a>
+    </div>
+    <div class="modal-content">
+        <div id="comments-list">
+            <h5>Comments:</h5>
+            <ul>
+              {{#each commentData}}
+                <li>{{commentData.body}}</li>
+              {{/each}}
+            </ul>
+            <hr>
+        </div>
+        <h5>Add a comment...</h5>
+        <textarea id="new-comment-field"></textarea>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn add-comment-btn" data-id="{{this.id}}">Add</a>   
+    </div>
+</div>
+
+{{else}}
+<div style="border:1px solid black;background:black;">
+    <h4 class="center-align" style="color:white">No Articles Saved Yet!</h4>
+</div>
+{{/if}}
