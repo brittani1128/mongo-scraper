@@ -1,31 +1,31 @@
 <div class="container">
-        
-{{#each data}}
-        <div class="card">
-            <div class="row">
-                <div class="card-title" style="font-weight: bold;">
-                    <h5>{{this.title}}</h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col m6 l4">
-                    <div class="image-div">
-                        <img class="responsive-img" style="max-width:250px" src="{{this.imageUrl}}">
-                    </div>
-                </div>
-                <div class="col m6 l8">
-                    <div class="card-content">
-                        <div class="card-text"><p>{{this.summary}}</p></div>
-                        <div class="card-link"><a href="{{this.link}}" target="_blank">Read More</a></div>
-                    </div> 
-                <a class="save-btn waves-effect waves-light btn right" data-id="{{this._id}}">Save</a> 
-                </div>      
+
+    {{#each data}}
+    <div class="card">
+        <div class="row">
+            <div class="card-title" style="font-weight: bold;">
+                <h5>{{this.title}}</h5>
             </div>
         </div>
-{{/each}}
+        <div class="row">
+            <div class="col m6 l4">
+                <div class="image-div">
+                    <img class="responsive-img" style="max-width:250px" src="{{this.imageUrl}}">
+                </div>
+            </div>
+            <div class="col m6 l8">
+                <div class="card-content">
+                    <div class="card-text">
+                        <p>{{this.summary}}</p>
+                    </div>
+                    <div class="card-link">
+                        <a href="{{this.link}}" target="_blank">Read More</a>
+                    </div>
+                </div>
+                <a class="save-btn waves-effect waves-light btn right" data-id="{{this._id}}">Save</a>
+            </div>
+        </div>
+    </div>
+    {{/each}}
 
 </div>
-
-
-
-

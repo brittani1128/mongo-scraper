@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 // Create schema for Comment model
 var CommentSchema = new Schema({
-    body:String
+    body: String
 });
 
 // Mongoose will save ObjectId of each comment, this Id is referred to in Article

@@ -1,15 +1,4 @@
 
-//TO DO
-
-//Currently: scraping site, storing info in db, getting results from db in json format
-//Mongoose with Models
-//Handlebars
-//Need to populate html with scraped data results
-//Save button option to save article (adds saved attribute)
-//  Create saved articles route to display all saved articles
-//  Comment btn on each saved article
-
-
 // DEPENDENCIES ==========================================================
 var express = require("express");
 var mongojs = require("mongojs");
