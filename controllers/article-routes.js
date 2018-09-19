@@ -2,6 +2,7 @@
 var express = require("express");
 var request = require("request");
 var cheerio = require("cheerio");
+var mongoose = require("mongoose");
 var Comment = require("../models/Comment.js");
 var Article = require("../models/Article.js");
 

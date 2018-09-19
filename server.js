@@ -22,19 +22,6 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 
-// Database configuration with mongoose
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-mongoose.Promise = Promise;
-var db = mongoose.connection;
-mongoose.connect(MONGODB_URI);
-
-
-// Show any mongoose errors
-db.on("error", function(error) {
-  console.log("Mongoose Error: ", error);
-});
-
-
 // Handlebars
 app.engine(
     "handlebars",

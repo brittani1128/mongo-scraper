@@ -3,7 +3,8 @@
 var express = require("express");
 var exphbs = require("express-handlebars");
 var Article = require("../models/Article");
-
+var mongoose = require("mongoose");
+var cheerio = require("cheerio");
 var router = express.Router();
 
 // Database configuration with mongoose
