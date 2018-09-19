@@ -88,7 +88,14 @@
   
   })
  
-
+$("#clear-all-btn").on("click", function(req,res){
+  $.ajax({
+    url:"/clear",
+    method:"DELETE"
+    
+  })
+  window.location.href= ("/");
+})
 
 
 

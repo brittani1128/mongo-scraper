@@ -96,5 +96,16 @@ router.get("/scrape", function(req,res){
         }
       });
   });
+
+  router.delete("/clear", function(req,res){
+    Article.remove({}, function(err){
+      if (err){
+        console.log(err)
+      } else {
+          console.log("Removed all articles")
+      }
+    })
+    res.redirect("/");
+  })
   
   module.exports = router;
