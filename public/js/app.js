@@ -79,7 +79,7 @@
       }
     }).then(function (data) {
       // globalId = "";
-      $("#comment-input").val("");
+      $("#new-comment-field").val("");
     });
     // $.getJSON("/api/getData?id=" + id, function (data) {
     //   var comments = data.comments;

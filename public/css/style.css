@@ -4,15 +4,22 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    font-family: 'Dosis', sans-serif;
 
 }
 
 nav {
     background-color:#2b1025;
+    font-family: 'Dosis', sans-serif;
 }
+
+ul#nav-mobile {
+    font-size:30px;
+} 
 
 .brand-logo {
     margin-left:50px;
+    
 }
 #headline {
     font-size: 20px;
@@ -21,6 +28,10 @@ nav {
 .card {
  margin:20px;
  padding:15px;
+}
+
+.card-text {
+    font-size:18px;
 }
 
 .comment-btn {
