@@ -39,6 +39,39 @@
       method: "POST"
     });
   
-  })
+  });
+
+  $(".remove-btn").on("click", function(req,res){
+    console.log("remove!");
+    var articleId = $(this).attr("data-id");
+    console.log(articleId)
+
+    $.ajax({
+      url: "/api/removed/"+ articleId,
+      method: "POST"
+    });
+  
+  });
+
+  $(".comment-btn").on("click", function(req,res){
+    console.log("comment!");
+    var articleId = $(this).attr("data-id");
+    console.log(articleId)
+
+    //modal pop open to leave comment
+
+    // $.ajax({
+    //   url: "/api/removed/"+ articleId,
+    //   method: "POST"
+    // });
+  
+  });
+
+
+
+
+
+
+
 
 })

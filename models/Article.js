@@ -25,7 +25,10 @@ var ArticleSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"Comment"
     },
-    saved:false
+    saved:{
+        type:Boolean,
+        default:false
+    }
 });
 
 // Create Article model

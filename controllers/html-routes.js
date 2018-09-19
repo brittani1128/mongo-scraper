@@ -25,15 +25,16 @@ router.get("/", function(req, res) {
   });
 
 
-  // app.get("/saved", function(req, res){
-//     db.scrapedData.find().sort({_id:1}, function(error, data){
-//         if (error){
-//             console.log(error)
-//           }
-//           else {
-//             res.json(data);
-//           }
-//     })
-// })
+  router.get("/saved", function(req, res){
+    Article.find({saved:true}, function(error, data){
+        if (error){
+            console.log(error);
+            res.status(500).send(error);
+          }
+          else {
+            res.render("saved", {data:data, saved:true});
+          }
+    })
+})
 
 module.exports = router;

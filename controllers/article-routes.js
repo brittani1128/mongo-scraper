@@ -54,5 +54,16 @@ router.get("/scrape", function(req,res){
       }
     });
   });
+
+  router.post("/api/removed/:id", function(req,res){
+    Article.findOneAndUpdate({_id:req.params.id}, {saved:false}, function(err,data){
+      if (err){
+        console.log(err);
+      } else {
+        console.log("data removed", data)
+      }
+      
+    });
+  });
   
   module.exports = router;
